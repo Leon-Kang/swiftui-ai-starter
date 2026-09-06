@@ -1,0 +1,23 @@
+disabled_rules:
+  - trailing_whitespace
+  - line_length
+
+opt_in_rules:
+  - closure_spacing
+  - explicit_init
+  - redundant_nil_coalescing
+  - trailing_newline
+
+included:
+  - App
+  - Features
+  - Shared
+  - Localization
+  - Tests
+
+excluded:
+  - Pods
+  - Carthage
+  - .build
+
+reporter: "xcode"

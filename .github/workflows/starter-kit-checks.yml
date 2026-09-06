@@ -1,0 +1,35 @@
+name: Starter Kit Checks
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run convention checks
+        run: bash scripts/check-project-conventions.sh .
+
+      - name: Run component registry checks
+        run: bash scripts/check-component-registry.sh .
+
+      - name: Test starter example
+        run: swift test --package-path Examples/StarterExample
+
+      - name: Run template tests when a project exists
+        run: |
+          if ls *.xcodeproj >/dev/null 2>&1; then
+            xcodebuild test -scheme "$(basename "$(ls *.xcodeproj | head -n 1)" .xcodeproj)" -destination 'platform=iOS Simulator,name=iPhone 16'
+          else
+            echo "No Xcode project in starter kit root; skipping xcodebuild test."
+          fi

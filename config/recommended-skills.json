@@ -1,0 +1,52 @@
+[
+  {
+    "name": "openai-docs",
+    "category": "required",
+    "install_mode": "system",
+    "reason": "Use official OpenAI documentation instead of stale memory."
+  },
+  {
+    "name": "playwright",
+    "category": "required",
+    "install_mode": "openai-curated",
+    "repo": "openai/skills",
+    "path": "skills/.curated/playwright",
+    "reason": "Automate browser-based flows and UI verification."
+  },
+  {
+    "name": "screenshot",
+    "category": "required",
+    "install_mode": "openai-curated",
+    "repo": "openai/skills",
+    "path": "skills/.curated/screenshot",
+    "reason": "Capture desktop screenshots for visual checks."
+  },
+  {
+    "name": "pdf",
+    "category": "optional",
+    "install_mode": "openai-curated",
+    "repo": "openai/skills",
+    "path": "skills/.curated/pdf",
+    "reason": "Handle PDF specs and generated artifacts."
+  },
+  {
+    "name": "doc",
+    "category": "optional",
+    "install_mode": "openai-curated",
+    "repo": "openai/skills",
+    "path": "skills/.curated/doc",
+    "reason": "Handle .docx documentation and deliverables."
+  },
+  {
+    "name": "swiftui-expert-skill",
+    "category": "optional",
+    "install_mode": "manual",
+    "reason": "Recommended local SwiftUI expertise skill if your environment provides it."
+  },
+  {
+    "name": "sosumi",
+    "category": "optional",
+    "install_mode": "manual",
+    "reason": "Recommended local Apple documentation lookup skill if available."
+  }
+]

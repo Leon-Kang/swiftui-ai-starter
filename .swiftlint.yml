@@ -1,0 +1,22 @@
+included:
+  - templates
+  - scripts
+  - docs
+
+excluded:
+  - .git
+
+opt_in_rules:
+  - empty_count
+  - explicit_init
+  - first_where
+  - sorted_imports
+
+line_length:
+  warning: 140
+  ignores_comments: true
+  ignores_urls: true
+
+type_name:
+  min_length: 3
+  max_length: 50
