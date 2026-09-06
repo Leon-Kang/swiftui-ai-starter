@@ -8,6 +8,20 @@ CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 USER_SKILLS_DIR="$CODEX_HOME/skills"
 SYSTEM_SKILLS_DIR="$CODEX_HOME/skills/.system"
 INSTALLER_SCRIPT="$SYSTEM_SKILLS_DIR/skill-installer/scripts/install-skill-from-github.py"
+INSTALL_MISSING=0
+
+if [[ $# -gt 1 ]]; then
+  echo "usage: $0 [--install]"
+  exit 2
+fi
+
+if [[ $# -eq 1 ]]; then
+  if [[ "$1" != "--install" ]]; then
+    echo "usage: $0 [--install]"
+    exit 2
+  fi
+  INSTALL_MISSING=1
+fi
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
   echo "error: missing config file at $CONFIG_FILE"
@@ -19,18 +33,19 @@ if [[ ! -d "$USER_SKILLS_DIR" ]]; then
   exit 1
 fi
 
-if [[ ! -f "$INSTALLER_SCRIPT" ]]; then
+if [[ "$INSTALL_MISSING" -eq 1 && ! -f "$INSTALLER_SCRIPT" ]]; then
   echo "error: missing skill installer at $INSTALLER_SCRIPT"
   exit 1
 fi
 
-python3 - "$CONFIG_FILE" "$USER_SKILLS_DIR" "$SYSTEM_SKILLS_DIR" "$INSTALLER_SCRIPT" <<'PY'
+python3 - "$CONFIG_FILE" "$USER_SKILLS_DIR" "$SYSTEM_SKILLS_DIR" "$INSTALLER_SCRIPT" "$INSTALL_MISSING" <<'PY'
 import json
 import os
 import subprocess
 import sys
 
-config_path, user_skills_dir, system_skills_dir, installer_script = sys.argv[1:5]
+config_path, user_skills_dir, system_skills_dir, installer_script, install_missing_value = sys.argv[1:6]
+install_missing = install_missing_value == "1"
 
 with open(config_path, "r", encoding="utf-8") as handle:
     skills = json.load(handle)
@@ -38,6 +53,7 @@ with open(config_path, "r", encoding="utf-8") as handle:
 installed = []
 already_present = []
 manual_missing = []
+installable_missing = []
 failed = []
 
 def skill_exists(name: str) -> bool:
@@ -46,6 +62,7 @@ def skill_exists(name: str) -> bool:
 for item in skills:
     name = item["name"]
     mode = item["install_mode"]
+    category = item.get("category", "optional")
     reason = item.get("reason", "")
 
     if skill_exists(name):
@@ -61,6 +78,14 @@ for item in skills:
         continue
 
     if mode == "openai-curated":
+        if category != "required":
+            manual_missing.append((name, reason))
+            continue
+
+        if not install_missing:
+            installable_missing.append((name, reason))
+            continue
+
         command = [
             "python3",
             installer_script,
@@ -90,6 +115,12 @@ if already_present:
 if installed:
     print("Installed now:")
     for name, reason in installed:
+        print(f"- {name}: {reason}")
+    print("")
+
+if installable_missing:
+    print("Available to install with --install:")
+    for name, reason in installable_missing:
         print(f"- {name}: {reason}")
     print("")
 

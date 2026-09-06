@@ -23,20 +23,27 @@
 
 1. 在 GitHub 选择 **Use this template**，或复制仓库到新项目。
 2. 开始开发前先阅读 `AGENTS.md`。
-3. 运行规则检查：
+3. 检查推荐技能。安装操作需要显式确认：
+
+   ```bash
+   bash scripts/init-project-skills.sh
+   bash scripts/init-project-skills.sh --install
+   ```
+
+4. 运行规则检查：
 
    ```bash
    bash scripts/check-project-conventions.sh .
    bash scripts/check-component-registry.sh .
    ```
 
-4. 验证示例项目：
+5. 验证示例项目：
 
    ```bash
    swift test --package-path Examples/StarterExample
    ```
 
-5. 根据项目需要采用 `templates/`，新增共享组件时同步登记。
+6. 根据项目需要采用 `templates/`，新增共享组件时同步登记。
 
 ## 边界
 

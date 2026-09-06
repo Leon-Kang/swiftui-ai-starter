@@ -129,7 +129,7 @@
 
 ## 13. 开发前检查清单
 
-- 是否已运行 `scripts/init-project-skills.sh`
+- 是否已运行 `scripts/init-project-skills.sh` 检查技能状态
 - 推荐 skills 是否已就绪
 - 是否查过共享组件登记区
 - 是否确认新代码放在正确层级
@@ -161,7 +161,9 @@
 
 规则如下：
 
-- 初始化项目时先运行 `scripts/init-project-skills.sh`
+- 初始化项目时先运行 `scripts/init-project-skills.sh`，默认仅检查
+- 需要安装缺失的 required curated skills 时，显式运行 `scripts/init-project-skills.sh --install`
 - 脚本会检查 `$CODEX_HOME/skills` 和 `$CODEX_HOME/skills/.system`
-- 缺失的官方可安装 skills 会自动安装
+- 不带参数时不修改本机技能目录
+- `--install` 只安装缺失的 required curated skills
 - 非官方 curated 的本地自定义 skills 只做提示，不做路径猜测或强装

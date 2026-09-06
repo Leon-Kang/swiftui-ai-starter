@@ -27,20 +27,27 @@ The starter keeps product code private while making the engineering contract exp
 
 1. Select **Use this template** on GitHub, or copy the repository into a new project.
 2. Read `AGENTS.md` before adding product code.
-3. Run the starter checks:
+3. Audit recommended local skills. Installation remains opt-in:
+
+   ```bash
+   bash scripts/init-project-skills.sh
+   bash scripts/init-project-skills.sh --install
+   ```
+
+4. Run the starter checks:
 
    ```bash
    bash scripts/check-project-conventions.sh .
    bash scripts/check-component-registry.sh .
    ```
 
-4. Open the example package in Xcode or verify it from the command line:
+5. Open the example package in Xcode or verify it from the command line:
 
    ```bash
    swift test --package-path Examples/StarterExample
    ```
 
-5. Adapt the files under `templates/` to your app and register new shared components in both `AGENTS.md` and `docs/component-registry.md`.
+6. Adapt the files under `templates/` to your app and register new shared components in both `AGENTS.md` and `docs/component-registry.md`.
 
 ## Principles
 

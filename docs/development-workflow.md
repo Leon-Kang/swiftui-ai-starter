@@ -2,7 +2,7 @@
 
 ## 日常开发流程
 
-1. 先运行 `scripts/init-project-skills.sh`
+1. 先运行 `scripts/init-project-skills.sh` 检查技能状态；需要安装缺失的 required curated skills 时再显式添加 `--install`
 2. 再读 `AGENTS.md`
 3. 查共享组件登记区和 `docs/component-registry.md`
 4. 判断需求属于：
