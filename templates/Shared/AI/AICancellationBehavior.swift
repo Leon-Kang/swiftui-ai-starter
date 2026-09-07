@@ -1,6 +1,6 @@
 import Foundation
 
-enum AICancellationBehavior: Sendable {
+public enum AICancellationBehavior: Equatable, Sendable {
     case cooperative
     case mandatory
 }

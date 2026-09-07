@@ -1,8 +1,7 @@
 import Foundation
 
-protocol PromptBuilder {
-    associatedtype Input
+public protocol PromptBuilder: Sendable {
+    associatedtype Input: Sendable
 
-    func buildPrompt(from input: Input) -> String
-    func schema() -> String?
+    func buildRequest(from input: Input) -> AIRequest
 }

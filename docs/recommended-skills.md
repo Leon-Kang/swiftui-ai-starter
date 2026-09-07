@@ -14,7 +14,7 @@
 | `playwright` | 浏览器自动化与 UI 验证 | install with `--install` |
 | `screenshot` | 桌面截图与视觉核对 | install with `--install` |
 | `pdf` | PDF 读取与生成 | advisory only |
-| `doc` | `.docx` 读取与编辑 | advisory only |
+| `documents` | `.docx` 读取与编辑 | advisory only |
 
 ## 本地可选增强
 
@@ -22,7 +22,7 @@
 
 | Skill | Purpose | Install Mode |
 | --- | --- | --- |
-| `swiftui-expert-skill` | SwiftUI 结构、状态管理、现代 API 规范 | local-only advisory |
+| `swiftui-pro` | SwiftUI 结构、状态管理、现代 API 规范 | local-only advisory |
 | `sosumi` | Apple API 文档和 HIG 查询 | local-only advisory |
 
 ## 初始化规则

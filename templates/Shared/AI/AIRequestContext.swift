@@ -1,16 +1,16 @@
 import Foundation
 
-struct AIRequestContext: Sendable {
-    let feature: String
-    let timeout: TimeInterval
-    let allowsRetry: Bool
-    let cancellationBehavior: AICancellationBehavior
-    let telemetry: AITelemetry
-    let cachePolicy: AICachePolicy
-    let traceID: UUID
-    let userMetadata: [String: String]
+public struct AIRequestContext: Sendable {
+    public let feature: String
+    public let timeout: TimeInterval
+    public let allowsRetry: Bool
+    public let cancellationBehavior: AICancellationBehavior
+    public let telemetry: AITelemetry
+    public let cachePolicy: AICachePolicy
+    public let traceID: UUID
+    public let safeMetadata: AIMetadata
 
-    init(
+    public init(
         feature: String,
         timeout: TimeInterval = 15,
         allowsRetry: Bool = true,
@@ -18,7 +18,7 @@ struct AIRequestContext: Sendable {
         telemetry: AITelemetry = .init(scope: "default"),
         cachePolicy: AICachePolicy = .ephemeral,
         traceID: UUID = UUID(),
-        userMetadata: [String: String] = [:]
+        safeMetadata: AIMetadata = AIMetadata()
     ) {
         self.feature = feature
         self.timeout = timeout
@@ -27,6 +27,6 @@ struct AIRequestContext: Sendable {
         self.telemetry = telemetry
         self.cachePolicy = cachePolicy
         self.traceID = traceID
-        self.userMetadata = userMetadata
+        self.safeMetadata = safeMetadata
     }
 }

@@ -1,5 +1,9 @@
 name: Starter Kit Checks
 
+concurrency:
+  group: starter-kit-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -8,10 +12,13 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: "23 3 * * 1"
 
 jobs:
   validate:
     runs-on: macos-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -23,13 +30,15 @@ jobs:
       - name: Run component registry checks
         run: bash scripts/check-component-registry.sh .
 
-      - name: Test starter example
+      - name: Compile templates and run AI policy tests
+        run: swift test
+
+      - name: Test starter example as an external consumer
         run: swift test --package-path Examples/StarterExample
 
-      - name: Run template tests when a project exists
+      - name: Lint Swift templates
         run: |
-          if ls *.xcodeproj >/dev/null 2>&1; then
-            xcodebuild test -scheme "$(basename "$(ls *.xcodeproj | head -n 1)" .xcodeproj)" -destination 'platform=iOS Simulator,name=iPhone 16'
-          else
-            echo "No Xcode project in starter kit root; skipping xcodebuild test."
+          if ! command -v swiftlint >/dev/null 2>&1; then
+            brew install swiftlint
           fi
+          swiftlint lint --strict

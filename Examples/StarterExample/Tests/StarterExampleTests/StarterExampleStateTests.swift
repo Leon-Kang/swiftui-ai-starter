@@ -9,4 +9,10 @@ final class StarterExampleStateTests: XCTestCase {
 
         XCTAssertEqual(state.completedTasks, 1)
     }
+
+    func testMinimalAIIntegrationUsesStarterRuntime() async throws {
+        let summary = try await StarterExampleSummarizer().summarize("Hello AI")
+
+        XCTAssertEqual(summary.bullets, ["Processed 8 characters"])
+    }
 }

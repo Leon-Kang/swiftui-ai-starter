@@ -19,6 +19,16 @@
 - `Localization/`: 文案与本地化出口
 - `Tests/`: 单测、集成测试、AI 测试
 
+## 2.1 AI 操作安全边界
+
+- 修改前先检查仓库状态并阅读相关文件，未读文件不得直接覆盖。
+- 现有未提交改动属于用户，禁止修改无关文件。
+- 未经明确授权，不得 commit、push、merge、发布、部署或修改生产基础设施。
+- 数据库、持久化数据和不可逆迁移必须先有备份、回滚方案和迁移测试。
+- 不得为了通过检查而关闭测试、lint、分支保护或安全规则。
+- 修改后运行约定检查、`swift test` 和最小消费示例测试；未执行项必须明确说明。
+- secret 不得进入 prompt、日志、fixture、截图、telemetry 或版本库。
+
 ## 3. 单文件单主类型规则
 
 - 每个 Swift 文件只允许一个主类型：`class`、`struct`、`enum`、`actor`、`protocol` 之一。
@@ -102,6 +112,7 @@
 - 仓库必须提供最少一条 CI 流程，运行约定检查、构建和测试。
 - CI 失败视为规则未落地，不能靠人工口头兜底。
 - 新 starter 模板必须先通过自己的检查脚本，再作为示例提供给业务项目。
+- 修改 public starter API 时必须同步更新并测试 `Examples/StarterExample`，不得留下失效示例。
 - 严格并发级别、最低 iOS 版本、Swift 版本、Debug/Release 差异必须在工程配置或文档中可见。
 
 ## 11. 禁止事项
@@ -150,13 +161,13 @@
 | `playwright` | 做 WebView、网页控制台、管理后台或自动化 UI 验证 |
 | `screenshot` | 做桌面或窗口截图验证 |
 | `pdf` | 处理 PDF 规格、导出物、设计稿附件 |
-| `doc` | 处理 `.docx` 文档和交付材料 |
+| `documents` | 处理 `.docx` 文档和交付材料 |
 
 可选但强烈建议在本地额外具备：
 
 | Skill | Why |
 | --- | --- |
-| `swiftui-expert-skill` | 规范 SwiftUI 视图、状态和现代 API 使用 |
+| `swiftui-pro` | 规范 SwiftUI 视图、状态和现代 API 使用 |
 | `sosumi` | 查询 Apple API 和 HIG 文档 |
 
 规则如下：

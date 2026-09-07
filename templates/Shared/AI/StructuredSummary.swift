@@ -1,5 +1,9 @@
 import Foundation
 
-struct StructuredSummary: Codable, Sendable {
-    let bullets: [String]
+public struct StructuredSummary: Codable, Equatable, Sendable {
+    public let bullets: [String]
+
+    public init(bullets: [String]) {
+        self.bullets = bullets
+    }
 }

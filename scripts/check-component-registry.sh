@@ -48,12 +48,20 @@ check_registered() {
   fi
 }
 
-while IFS= read -r component; do
-  check_registered "$component"
-done < <(find "$ROOT_DIR/templates/Shared/DesignSystem/Components" -type f -name '*.swift' | sort)
+DESIGN_SYSTEM_ROOT="$ROOT_DIR/templates/Shared/DesignSystem/Components"
+[[ -d "$DESIGN_SYSTEM_ROOT" ]] || DESIGN_SYSTEM_ROOT="$ROOT_DIR/Shared/DesignSystem/Components"
+if [[ -d "$DESIGN_SYSTEM_ROOT" ]]; then
+  while IFS= read -r component; do
+    check_registered "$component"
+  done < <(find "$DESIGN_SYSTEM_ROOT" -type f -name '*.swift' | sort)
+fi
 
-while IFS= read -r capability; do
-  check_registered "$capability"
-done < <(find "$ROOT_DIR/templates/Shared/AI" -type f -name '*Capability.swift' | sort)
+AI_ROOT="$ROOT_DIR/templates/Shared/AI"
+[[ -d "$AI_ROOT" ]] || AI_ROOT="$ROOT_DIR/Shared/AI"
+if [[ -d "$AI_ROOT" ]]; then
+  while IFS= read -r capability; do
+    check_registered "$capability"
+  done < <(find "$AI_ROOT" -type f -name '*Capability.swift' | sort)
+fi
 
 exit "$STATUS"

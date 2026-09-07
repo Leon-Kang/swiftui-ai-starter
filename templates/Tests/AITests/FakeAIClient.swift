@@ -1,19 +1,34 @@
 import Foundation
+@testable import SwiftUIAIStarter
 
-final class FakeAIClient: AIClient {
+actor FakeAIClient: AIClient {
     private(set) var callCount = 0
-    private let result: Result<AIClientResponse, Error>
+    private var results: [Result<AIClientResponse, FakeAIClientError>]
+    private let delay: Duration?
 
-    init(result: Result<AIClientResponse, Error>) {
-        self.result = result
+    init(
+        results: [Result<AIClientResponse, FakeAIClientError>],
+        delay: Duration? = nil
+    ) {
+        precondition(!results.isEmpty)
+        self.results = results
+        self.delay = delay
     }
 
-    func perform(
-        prompt: String,
-        schema: String?,
-        context: AIRequestContext
-    ) async throws -> AIClientResponse {
+    func perform(request: AIRequest, context: AIRequestContext) async throws -> AIClientResponse {
         callCount += 1
-        return try result.get()
+        if let delay {
+            try await Task.sleep(for: delay)
+        }
+
+        let result = results.count == 1 ? results[0] : results.removeFirst()
+        switch result {
+        case let .success(response):
+            return response
+        case .failure(.cancelled):
+            throw CancellationError()
+        case let .failure(error):
+            throw error
+        }
     }
 }

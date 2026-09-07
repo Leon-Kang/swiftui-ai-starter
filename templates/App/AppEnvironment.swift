@@ -1,8 +1,8 @@
 import Foundation
 
 struct AppEnvironment {
-    let aiClient: AIClient
-    let resultCache: AIResultCache
+    let aiClient: any AIClient
+    let resultCache: any AIResultCache
 
     static func live() -> AppEnvironment {
         AppEnvironment(

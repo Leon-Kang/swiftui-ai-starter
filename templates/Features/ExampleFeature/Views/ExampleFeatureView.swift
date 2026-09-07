@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ExampleFeatureView: View {
-    @StateObject private var viewModel = ExampleFeatureViewModel()
+    @State private var viewModel = ExampleFeatureViewModel()
 
     var body: some View {
         Group {

@@ -18,12 +18,14 @@
 1. 运行 `scripts/check-project-conventions.sh`
 2. 运行 `scripts/check-component-registry.sh`
 3. 运行格式或 lint 检查
-4. 运行 `xcodebuild test` 或项目等价测试命令
+4. 用 `swift test` 编译完整模板并运行 AI 策略测试
+5. 把最小示例作为外部依赖消费者再次构建和测试
 
 ## SwiftUI / Concurrency 基线
 
 - 所有 UI 驱动 ViewModel 默认 `@MainActor`
 - 可跨任务传递的值类型优先 `Sendable`
+- 共享可变状态必须由 `actor` 或明确的全局 actor 保护
 - 异步服务必须支持取消
 - Debug 和 Release 的依赖注入、日志、AI provider 选择要可见
 
@@ -38,4 +40,4 @@
 - `AIRequestContext` 必须覆盖 timeout、retry、cancellation、telemetry、cache policy
 - 至少提供一个 fake client
 - 至少提供一组 fixture
-- 至少提供 prompt、decode、fallback、cache 的真实测试模板
+- 至少提供 request roles、decode、fallback、timeout、retry、cancellation、telemetry、cache 的真实测试

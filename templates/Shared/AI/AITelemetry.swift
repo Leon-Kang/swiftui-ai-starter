@@ -1,10 +1,10 @@
 import Foundation
 
-struct AITelemetry: Sendable {
-    let scope: String
-    let metadata: [String: String]
+public struct AITelemetry: Sendable {
+    public let scope: String
+    public let metadata: AIMetadata
 
-    init(scope: String, metadata: [String: String] = [:]) {
+    public init(scope: String, metadata: AIMetadata = AIMetadata()) {
         self.scope = scope
         self.metadata = metadata
     }

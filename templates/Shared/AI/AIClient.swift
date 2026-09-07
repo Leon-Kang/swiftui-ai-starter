@@ -1,9 +1,5 @@
 import Foundation
 
-protocol AIClient {
-    func perform(
-        prompt: String,
-        schema: String?,
-        context: AIRequestContext
-    ) async throws -> AIClientResponse
+public protocol AIClient: Sendable {
+    func perform(request: AIRequest, context: AIRequestContext) async throws -> AIClientResponse
 }

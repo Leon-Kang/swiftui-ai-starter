@@ -20,3 +20,11 @@ line_length:
 type_name:
   min_length: 3
   max_length: 50
+
+identifier_name:
+  excluded:
+    - xs
+    - sm
+    - md
+    - lg
+    - xl

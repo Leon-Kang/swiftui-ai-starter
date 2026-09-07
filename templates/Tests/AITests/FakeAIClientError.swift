@@ -1,5 +1,6 @@
 import Foundation
 
-enum FakeAIClientError: Error {
+enum FakeAIClientError: Error, Sendable {
     case forcedFailure
+    case cancelled
 }

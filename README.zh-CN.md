@@ -17,7 +17,8 @@
 - `config/`：starter kit 配置清单，包括推荐技能列表
 - `templates/`：目录骨架和 Swift 接口模板
 - `scripts/`：约定检查脚本
-- `Examples/StarterExample/`：可构建、可测试的最小 Swift 示例包
+- `Package.swift`：编译完整模板并运行 AI 策略测试
+- `Examples/StarterExample/`：真正依赖 starter runtime 的最小外部消费示例
 
 ## 使用方式
 
@@ -35,6 +36,7 @@
    ```bash
    bash scripts/check-project-conventions.sh .
    bash scripts/check-component-registry.sh .
+   swift test
    ```
 
 5. 验证示例项目：
@@ -44,6 +46,8 @@
    ```
 
 6. 根据项目需要采用 `templates/`，新增共享组件时同步登记。
+
+模板版本记录在 `starter-version.json`，后续升级先阅读 `docs/upgrading.md`。
 
 ## 边界
 

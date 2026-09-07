@@ -1,8 +1,8 @@
 import Foundation
 
-protocol AICapability {
-    associatedtype Input
-    associatedtype Output
+public protocol AICapability: Sendable {
+    associatedtype Input: Sendable
+    associatedtype Output: Sendable
 
     func execute(input: Input, context: AIRequestContext) async throws -> Output
 }

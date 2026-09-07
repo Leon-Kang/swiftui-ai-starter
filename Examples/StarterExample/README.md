@@ -1,6 +1,8 @@
 # Starter Example
 
-This minimal Swift package shows how the starter separates state from SwiftUI presentation while keeping user-facing copy injectable and localizable by the host app.
+This minimal Swift package consumes `SwiftUIAIStarter` as an external local dependency. It proves
+that the public AI request, capability, cache, and structured-output APIs work from a host project,
+alongside a small SwiftUI state/view example.
 
 Run it with:
 

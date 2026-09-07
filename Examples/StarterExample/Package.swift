@@ -11,8 +11,16 @@ let package = Package(
     products: [
         .library(name: "StarterExample", targets: ["StarterExample"]),
     ],
+    dependencies: [
+        .package(path: "../.."),
+    ],
     targets: [
-        .target(name: "StarterExample"),
+        .target(
+            name: "StarterExample",
+            dependencies: [
+                .product(name: "SwiftUIAIStarter", package: "swiftui-ai-starter"),
+            ]
+        ),
         .testTarget(
             name: "StarterExampleTests",
             dependencies: ["StarterExample"]

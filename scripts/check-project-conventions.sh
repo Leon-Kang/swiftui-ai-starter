@@ -52,7 +52,7 @@ check_single_primary_type() {
     [[ "$file" == *"/Carthage/"* ]] && continue
 
     local count
-    count=$(search_matches '^[[:space:]]*(final[[:space:]]+)?(class|struct|enum|actor|protocol)[[:space:]]+[A-Za-z_][A-Za-z0-9_]*' "$file" | wc -l | tr -d ' ')
+    count=$(search_matches '^[[:space:]]*((public|internal|private|fileprivate|package|open|final|indirect|nonisolated)[[:space:]]+)*(class|struct|enum|actor|protocol)[[:space:]]+[A-Za-z_][A-Za-z0-9_]*' "$file" | wc -l | tr -d ' ')
     if [[ "$count" -gt 1 ]]; then
       echo "error: multiple primary types in $file"
       STATUS=1
@@ -81,9 +81,12 @@ check_hardcoded_user_facing_strings() {
     "$ROOT_DIR/templates/App"
     "$ROOT_DIR/templates/Features"
     "$ROOT_DIR/templates/Shared/DesignSystem"
+    "$ROOT_DIR/App"
+    "$ROOT_DIR/Features"
+    "$ROOT_DIR/Shared/DesignSystem"
   )
-  local direct_view_pattern='(Text|Button|Label|navigationTitle|navigationSubtitle)\s*\(\s*"[^"]*[A-Za-z][^"]*"'
-  local named_argument_pattern='\b(title|message|actionTitle)\s*:\s*"[^"]*[A-Za-z][^"]*"'
+  local direct_view_pattern='(Text|Button|Label|navigationTitle|navigationSubtitle)\s*\(\s*"[^"]+"'
+  local named_argument_pattern='\b(title|message|actionTitle)\s*:\s*"[^"]+"'
 
   for root in "${scan_roots[@]}"; do
     [[ -d "$root" ]] || continue
@@ -96,22 +99,26 @@ check_hardcoded_user_facing_strings() {
 }
 
 check_viewmodels_main_actor() {
-  local viewmodel_root="$ROOT_DIR/templates/Features"
-  [[ -d "$viewmodel_root" ]] || return
+  local viewmodel_roots=("$ROOT_DIR/templates/Features" "$ROOT_DIR/Features")
+  local viewmodel_root
+  for viewmodel_root in "${viewmodel_roots[@]}"; do
+    [[ -d "$viewmodel_root" ]] || continue
 
-  while IFS= read -r file; do
-    if search_quiet 'ObservableObject' "$file" && ! search_quiet '@MainActor' "$file"; then
-      echo "error: ObservableObject view model must be annotated with @MainActor: $file"
-      STATUS=1
-    fi
-  done < <(find "$viewmodel_root" -path '*/ViewModels/*.swift' -type f | sort)
+    while IFS= read -r file; do
+      if search_quiet 'ObservableObject|@Observable' "$file" && ! search_quiet '@MainActor' "$file"; then
+        echo "error: observable view model must be annotated with @MainActor: $file"
+        STATUS=1
+      fi
+    done < <(find "$viewmodel_root" -path '*/ViewModels/*.swift' -type f | sort)
+  done
 }
 
 check_ai_request_context_contract() {
   local file="$ROOT_DIR/templates/Shared/AI/AIRequestContext.swift"
+  [[ -f "$file" ]] || file="$ROOT_DIR/Shared/AI/AIRequestContext.swift"
   [[ -f "$file" ]] || return
 
-  local required_fields=(feature timeout allowsRetry cancellationBehavior telemetry cachePolicy traceID userMetadata)
+  local required_fields=(feature timeout allowsRetry cancellationBehavior telemetry cachePolicy traceID safeMetadata)
   local field
   for field in "${required_fields[@]}"; do
     if ! search_quiet "\\b${field}\\b" "$file"; then
@@ -119,10 +126,23 @@ check_ai_request_context_contract() {
       STATUS=1
     fi
   done
+
+  local capability="$ROOT_DIR/templates/Shared/AI/AISummarizationCapability.swift"
+  [[ -f "$capability" ]] || capability="$ROOT_DIR/Shared/AI/AISummarizationCapability.swift"
+  [[ -f "$capability" ]] || return
+
+  local runtime_contracts=(Task.sleep Task.checkCancellation cachePolicy retrying record)
+  for field in "${runtime_contracts[@]}"; do
+    if ! search_quiet "$field" "$capability"; then
+      echo "error: AI capability does not enforce runtime contract '${field}'"
+      STATUS=1
+    fi
+  done
 }
 
 check_localization_resources_exist() {
   local localization_dir="$ROOT_DIR/templates/Localization"
+  [[ -d "$localization_dir" ]] || localization_dir="$ROOT_DIR/Localization"
   [[ -d "$localization_dir" ]] || return
 
   if ! find "$localization_dir" -type f \( -name '*.xcstrings' -o -name 'Localizable.strings' \) | grep -q .; then

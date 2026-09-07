@@ -10,13 +10,13 @@
 
 - `AIClient`: 底层 provider 适配器
 - `AICapability`: 任务级能力接口
-- `PromptBuilder`: prompt 构造器
+- `PromptBuilder`: 分离 system/user 角色的请求构造器
 - `ResponseSchema`: 输出 schema 定义
 - `ResponseDecoder`: 结构化解析器
 - `AIResultCache`: 结果缓存
 - `AIFallbackPolicy`: 失败回退策略
-- `AIRequestContext`: 超时、追踪、调用来源、用户环境
-- `AITelemetry`: 统一遥测事件出口
+- `AIRequestContext`: 超时、追踪、调用来源、安全元数据
+- `AITelemetry` / `AIEventRecorder`: 无 prompt 内容的统一遥测事件出口
 
 ## 规则
 
@@ -36,7 +36,7 @@
 ### Structured Output
 
 - 必须定义 schema
-- decode 失败必须有 fallback
+- decode 失败必须明确选择 fallback 或继续抛错，禁止默认伪装成功
 - 展示给用户前必须经过 user-safe mapping
 
 ### Runtime Policy
@@ -49,6 +49,12 @@
 - telemetry
 - cache policy
 - user-safe metadata
+
+元数据使用 `AIMetadata` 的固定字段，不接受任意字典；字段值也只能放非敏感、低基数的运行标签。
+prompt 和原始输出不得写入 telemetry。
+
+取消必须始终传播，不允许被 fallback 捕获。`.disabled` 不得读写缓存，`.persisted` 只能由
+真正支持持久化的 cache adapter 执行。默认 client 未配置时必须明确失败。
 
 ### Provider Independence
 
@@ -66,6 +72,7 @@
 - cache 命中和失效策略
 - provider 失败时 fallback 生效
 - request context 是否带齐 timeout / telemetry / cache policy
+- timeout、retry、取消传播、遥测事件和不同 cache policy 的真实行为
 
 ## 推荐目录
 

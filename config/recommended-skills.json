@@ -30,15 +30,13 @@
     "reason": "Handle PDF specs and generated artifacts."
   },
   {
-    "name": "doc",
+    "name": "documents",
     "category": "optional",
-    "install_mode": "openai-curated",
-    "repo": "openai/skills",
-    "path": "skills/.curated/doc",
+    "install_mode": "manual",
     "reason": "Handle .docx documentation and deliverables."
   },
   {
-    "name": "swiftui-expert-skill",
+    "name": "swiftui-pro",
     "category": "optional",
     "install_mode": "manual",
     "reason": "Recommended local SwiftUI expertise skill if your environment provides it."

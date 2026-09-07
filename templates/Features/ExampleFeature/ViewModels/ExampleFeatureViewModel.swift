@@ -1,8 +1,9 @@
-import Foundation
+import Observation
 
 @MainActor
-final class ExampleFeatureViewModel: ObservableObject {
-    @Published private(set) var items: [String] = []
+@Observable
+final class ExampleFeatureViewModel {
+    private(set) var items: [String] = []
 
     func reload() {
         items = ["First", "Second", "Third"]

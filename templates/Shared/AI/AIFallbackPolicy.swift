@@ -1,6 +1,6 @@
 import Foundation
 
-enum AIFallbackPolicy<Output> {
+public enum AIFallbackPolicy<Output: Sendable>: Sendable {
     case staticValue(Output)
     case rethrowError
 }

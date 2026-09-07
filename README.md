@@ -12,8 +12,9 @@ The starter keeps product code private while making the engineering contract exp
 - `docs/` — architecture, design-system, AI, localization, and workflow guidance
 - `templates/` — reusable SwiftUI, service, platform, localization, and AI building blocks
 - `scripts/` — executable convention and component-registry checks
-- `Examples/StarterExample/` — a minimal Swift package that demonstrates the structure
-- `.github/workflows/` — CI for the rules and the example package
+- `Package.swift` — a buildable package for the complete template and its policy tests
+- `Examples/StarterExample/` — a minimal external consumer of the AI runtime
+- `.github/workflows/` — CI for rules, templates, policy tests, lint, and the consumer example
 
 ## Why use it
 
@@ -39,15 +40,19 @@ The starter keeps product code private while making the engineering contract exp
    ```bash
    bash scripts/check-project-conventions.sh .
    bash scripts/check-component-registry.sh .
+   swift test
    ```
 
-5. Open the example package in Xcode or verify it from the command line:
+5. Verify that an external package can consume the starter:
 
    ```bash
    swift test --package-path Examples/StarterExample
    ```
 
 6. Adapt the files under `templates/` to your app and register new shared components in both `AGENTS.md` and `docs/component-registry.md`.
+
+The template version is recorded in `starter-version.json`. Review `docs/upgrading.md` before
+applying a later starter release to an existing product.
 
 ## Principles
 
@@ -60,7 +65,7 @@ The starter keeps product code private while making the engineering contract exp
 
 ## Scope
 
-This repository is an engineering starter, not a complete application generator. It intentionally contains no product branding, backend credentials, analytics setup, monetization code, or provider-specific secrets.
+This repository is an engineering starter, not a complete Xcode application generator. It intentionally contains no product branding, backend credentials, analytics setup, monetization code, or provider-specific secrets.
 
 ## Related project
 
